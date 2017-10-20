@@ -396,6 +396,19 @@ test_that("floor_date works for different units", {
 
 The highest-level structure of tests is the file. Each file should contain a single `context()` call that provides a brief description of its contents. Just like the files in the `R/` directory, you are free to organise your tests any way that you like. But again, the two extremes are clearly bad (all tests in one file, one file per test). You need to find a happy medium that works for you. A good starting place is to have one file of tests for each complicated function.
 
+## Test Data
+
+It is often useful to use small data samples in testing. While it often may be possible to use internal datasets such as `data(iris)` or `letters` in testing, sometimes it is useful to use your own example data. Test data that isn't used elsewhere in the package can be placed in the `/tests/testthat/data` and accessed from within a test using the relative path starting with 'data', for example, if the files `mytestdata.csv` is in this directory, the file can be accessed within a testing script thus:
+
+```r
+test_that("myfunction works with mytestdata", {
+  mytestdata <- read.csv('data/mytestdata.csv')
+  mytestoutput <- read.csv('data/mytestoutput.csv')
+  myfunctionoutput <- myfunction(mytestdata)
+  expect_equal(myfunctionoutput, mytestoutput)
+})
+```
+
 ## CRAN notes {#test-cran}
 
 CRAN will run your tests on all CRAN platforms: Windows, Mac, Linux and Solaris. There are a few things to bear in mind:
